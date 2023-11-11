@@ -1,15 +1,17 @@
 import { View, Text,FlatList, ActivityIndicator, Image, TextInput, TouchableOpacity, ScrollView} from 'react-native'
 import React, { useEffect, useState } from 'react'
 
-const API_Screen_03 = ({navigation,route}) => {
+const API_Screen_update = ({navigation,route}) => {
 
 
 
 
-  const data = [route.params];
+  const data = [route.params?.data];
+
   console.log("data",data)
-  // const [task,setTask] = useState([route.params]);
-  const [text,setText] = useState("");
+//   console.log("task",route.params?.task.id)
+//   const [task,setTask] = useState(route.params?.task)
+  const [text,setText] = useState(route.params?.task.name);
 
   // const getData = async () => {
   //   try {
@@ -25,10 +27,10 @@ const API_Screen_03 = ({navigation,route}) => {
   //   }
   // };
 
-  const save = async () => {
+  const update = async (id) => {
     try {
-      const response = await fetch('https://6544c50f5a0b4b04436cf1b9.mockapi.io/api/v1/users/1/tasks',{
-        method:"POST",
+      const response = await fetch('https://6544c50f5a0b4b04436cf1b9.mockapi.io/api/v1/users/1/tasks/' + id,{
+        method:"PUT",
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
@@ -61,7 +63,7 @@ const API_Screen_03 = ({navigation,route}) => {
     return(
       <View style={{flex:1}}>
                 
-                  <View style={{flexDirection:"row",position:"absolute",top:10,left:5}}>
+                  <View key={item.id} style={{flexDirection:"row",position:"absolute",top:10,left:5}}>
                   
                   
                   
@@ -73,16 +75,16 @@ const API_Screen_03 = ({navigation,route}) => {
                   <Image source={require('../assets/Icon Button 11.png')}  style={{width:50,height:50,borderRadius:25,marginLeft:110}}></Image>
                   </View>
                  <View style={{alignItems:"center"}}>
-                      <Text style={{fontFamily:"Epilogue",fontSize:32,fontWeight:700,marginTop:100}}>ADD YOUR JOB</Text>
+                      <Text style={{fontFamily:"Epilogue",fontSize:32,fontWeight:700,marginTop:100}}>UPDATE YOUR JOB</Text>
                       <View style={{width:334,height:44,borderRadius:4,borderWidth:1,marginTop:100,justifyContent:"center"}}>
                 <Image source={require('../assets/Frame (5).png')}  style={{width:24,height:24,position:"absolute",left:10}}></Image>
-                  <TextInput style={{width:334,height:44,paddingLeft:50}} placeholder='Input your job' value={text} onChangeText={
+                  <TextInput style={{width:334,height:44,paddingLeft:50}}  value={text} onChangeText={
                     (text)=> setText(text)}>
             
                   </TextInput>
               </View>
               <TouchableOpacity style={{width:190,height:44,borderRadius:12,backgroundColor:"#00BDD6",justifyContent:"center",alignItems:"center",marginTop:50}}
-              onPress={()=> {save(),navigation.navigate('API_Screen_02')}}>
+              onPress={()=> {update(route.params?.task.id),navigation.navigate('API_Screen_02')}}>
                   <Text style={{fontFamily:"Inter",fontSize:16,fontWeight:400,color:"#FFF"}}>FINISH</Text>
 
               </TouchableOpacity>
@@ -98,4 +100,4 @@ const API_Screen_03 = ({navigation,route}) => {
   )
 }
 
-export default API_Screen_03
+export default API_Screen_update
